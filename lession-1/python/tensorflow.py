@@ -2,7 +2,7 @@ import tensorflow as tf
 import numpy as np
 import pandas as pd
 
-x = tf.placeholder(tf.string,shape=[None,]);
+x = tf.placeholder(tf.string,shape=[None,])
 image_bin = tf.decode_base64(x)
 image_bin_reshape = tf.reshape(image_bin,shape=[-1,])
 images = tf.map_fn(lambda img: tf.image.decode_png(img), image_bin_reshape,dtype=tf.uint8)
@@ -71,7 +71,7 @@ predict2 = tf.argmax(letter2,1)
 predict3 = tf.argmax(letter3,1)
 predict4 = tf.argmax(letter4,1)
 
-#Éú³É×îÖÕ½á¹û
+#ç”Ÿæˆæœ€ç»ˆç»“æžœ
 base_str = tf.constant("BCEFGHJKMPQRTVWXY2346789")
 poses = tf.stack([predict1,predict2,predict3,predict4],axis=1)
 length = tf.constant([1,1,1,1],tf.int64)
@@ -86,12 +86,12 @@ sess.run(initer)
 saver.restore(sess)
 
 
-pickup = "BCEFGHJKMPQRTVWXY2346789";
+pickup = "BCEFGHJKMPQRTVWXY2346789"
 reader = pd.read_source(souce_id=802522,iterator=True)
 
 identity = np.identity(24)
 for i in range(15000):
-  #»ñÈ¡Í¼Æ¬Êý¾Ý
+  #èŽ·å–å›¾ç‰‡æ•°æ®
   df = reader.get_chunk(500)
   if df.empty:
     reader = pd.read_source(souce_id=802522,iterator=True)
@@ -104,7 +104,7 @@ for i in range(15000):
   batch_y_4 = [identity[pickup.find(code[3])] for code in batch_y]
 
   if i%10 == 0:
-    print("step:"+str(i));
+    print("step:"+str(i))
     accuracy_letter_,accuracy_ = sess.run([accuracy_letter,accuracy],feed_dict={x:batch_x,y1:batch_y_1,y2:batch_y_2,y3:batch_y_3,y4:batch_y_4})
     print(accuracy_letter_)
     print("accuracy is ====>%f"%accuracy_)
